@@ -1,0 +1,79 @@
+version: "3.9"
+
+# db(MySQL),app(Django),web(Nginx)のコンテナを作成
+services:
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - 80:80
+      - 3443:443  # local dev  https://localhost:3443
+      # - 443:443  # Production
+    depends_on:
+      - web
+    restart: always
+    environment:
+      STAGE: staging
+      DOMAINS: 'hoshinonaka-snak.net -> http://web:80'   # local dev
+      # DOMAINS: '****YourDomain**** -> http://nginx:80'   # Production
+    volumes:
+      - https-portal_data:/var/lib/https-portal
+  db:
+    container_name: hosnakpub-db
+    build:
+      context: .
+      dockerfile: containers/mysql/Dockerfile
+    platform: linux/x86_64
+    volumes:
+      - db_data:/var/lib/mysql
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+  app:
+    container_name: hosnakpub-app
+    build:
+      context: .
+      dockerfile: containers/django/Dockerfile
+    volumes:
+      - .:/code
+      - ./static:/static
+    # 8000番ポートをNginx側が接続できるよう開く
+    expose:
+      - "8000"
+    command: sh -c "/code/entrypoint.sh"
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    depends_on:
+      db:
+        # dbのヘルスチェックが終わってからappを起動させる
+        condition: service_healthy
+  web:
+    # コンテナ名をwebに指定
+    container_name: hosnakpub-web
+    # NginxのDockerfileをビルドする
+    build:
+      # ビルドコンテキストはカレントディレクトリ
+      context: .
+      dockerfile: containers/nginx/Dockerfile
+    # ボリュームを指定
+    # ローカルの/staticをコンテナの/staticにマウントする
+    volumes:
+      - ./static:/static
+    expose:
+      - 80
+    # ローカルの80番ボートをコンテナの80番ポートとつなぐ
+    # ports:
+    #   - "80:80"
+    # 先にappを起動してからwebを起動する
+    depends_on:
+      - app
+volumes:
+  db_data:
+  static:
+  https-portal_data:
