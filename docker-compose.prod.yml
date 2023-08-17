@@ -14,7 +14,7 @@ services:
     environment:
       STAGE: production
       # DOMAINS: 'localhost -> http://web:80'   # local dev
-      DOMAINS: 'hoshinonaka.snak.net -> http://web:80'   # Production
+      DOMAINS: 'hoshinonaka-snak.net -> http://web:80'   # Production
     volumes:
       - https-portal_data:/var/lib/https-portal
   db:
