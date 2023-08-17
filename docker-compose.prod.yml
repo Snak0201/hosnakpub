@@ -10,7 +10,6 @@ services:
       - 443:443  # Production
     depends_on:
       - web
-    restart: always
     environment:
       STAGE: production
       # DOMAINS: 'localhost -> http://web:80'   # local dev
