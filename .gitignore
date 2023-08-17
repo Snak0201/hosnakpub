@@ -161,6 +161,10 @@ cython_debug/
 
 # ignore static files
 static/
+media/
+
 # ignore migration files
 migrations/
 .env.staging
+
+!contents/static
