@@ -6,15 +6,15 @@ services:
     image: steveltn/https-portal:1
     ports:
       - 80:80
-      # - 3443:443  # local dev  https://localhost:3443
-      - 443:443  # Production
+      - 3443:443  # local dev  https://localhost:3443
+      # - 443:443  # Production
     depends_on:
       - web
     restart: always
     environment:
-      STAGE: production
-      # DOMAINS: 'localhost -> http://web:80'   # local dev
-      DOMAINS: 'hoshinonaka_snak.net -> http://web:80'   # Production
+      STAGE: local
+      DOMAINS: 'localhost -> http://web:80'   # local dev
+      # DOMAINS: '****YourDomain**** -> http://nginx:80'   # Production
     volumes:
       - https-portal_data:/var/lib/https-portal
   db:
@@ -27,7 +27,7 @@ services:
       - db_data:/var/lib/mysql
     # コンテナ内の環境変数を.env.prodを使って設定
     env_file:
-      - .env.prod
+      - .env.staging
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
       interval: 10s
@@ -48,7 +48,7 @@ services:
     command: sh -c "/code/entrypoint.sh"
     # コンテナ内の環境変数を.env.prodを使って設定
     env_file:
-      - .env.prod
+      - .env.staging
     depends_on:
       db:
         # dbのヘルスチェックが終わってからappを起動させる

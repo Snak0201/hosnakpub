@@ -163,4 +163,4 @@ cython_debug/
 static/
 # ignore migration files
 migrations/
-.env.prod
+.env.staging
