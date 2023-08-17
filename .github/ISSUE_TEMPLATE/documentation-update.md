@@ -8,6 +8,3 @@ assignees: Snak21-FPB
 ---
 
 # 内容
-
-# 要件
--
