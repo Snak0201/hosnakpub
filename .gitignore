@@ -164,7 +164,6 @@ static/
 media/
 
 # ignore migration files
-migrations/
 .env.staging
 
 !contents/static
