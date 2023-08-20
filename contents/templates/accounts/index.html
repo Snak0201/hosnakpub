@@ -11,7 +11,7 @@
 <body>
   <header>
     <nav>
-      <img src="{% static 'image/logo.png' %}" height="100px">
+      <a href="{% url 'accounts:index' %}"><img src="{% static 'image/logo.png' %}" height="100px"></a>
     </nav>
   </header>
   <h1>ほしのなか政府 トップページ</h1>
@@ -20,14 +20,14 @@
   <p>準備中です。</p>
   <h2 class="title">局一覧</h2>
   <p>準備中です。</p>
-  <h2 class="title">全民議会</h2>
+  <h2 class="title">全民議会構成</h2>
   <div class="infogram-embed" data-id="c1721866-5bee-4218-93cd-35496abbf5bc" data-type="interactive" data-title="全民議会" style="width: 80%;height: auto;max-width: 800px;margin: 0 auto;"></div>
     <script>!function(e,i,n,s){var t="InfogramEmbeds",d=e.getElementsByTagName("script")[0];if(window[t]&&window[t].initialized)window[t].process&&window[t].process();else if(!e.getElementById(n)){var o=e.createElement("script");o.async=1,o.id=n,o.src="https://e.infogram.com/js/dist/embed-loader-min.js",d.parentNode.insertBefore(o,d)}}(document,0,"infogram-async");</script>
   <div style="padding:8px 0;font-family:Arial!important;font-size:13px!important;line-height:15px!important;text-align:center;border-top:1px solid #dadada;margin:0 30px">
     <a href="https://infogram.com/c1721866-5bee-4218-93cd-35496abbf5bc" style="color:#989898!important;text-decoration:none!important;" target="_blank"></a><br><a href="https://infogram.com" style="color:#989898!important;text-decoration:none!important;" target="_blank" rel="nofollow">Infogram</a>
   </div>
   <footer>
-    <img src="{% static 'image/logo.png' %}" height="50px">
+    <img src="{% static 'image/logo.png' %}" height="50px" style="padding-right: 5px;">
     🄫 2023 Hoshinonaka/Snak
   </footer>
 </body>

@@ -26,7 +26,7 @@ class IndexViewTest(TestCase):
         self.assertContains(self.response, "局一覧", 1)
     
     def test_exist_parilament_space(self):
-        self.assertContains(self.response, "全民議会", 1)
+        self.assertContains(self.response, "全民議会構成", 1)
     
     def test_exist_footer(self):
         self.assertContains(self.response, "<footer>", 1)

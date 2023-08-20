@@ -24,4 +24,8 @@ footer{
   height: 50px;
   background-color: #6F76D0;
   color: yellow;
+  text-align: center;
+  display: flex;
+	justify-content: center;
+  align-items: center;
 }
