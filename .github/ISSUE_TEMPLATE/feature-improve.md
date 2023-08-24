@@ -1,13 +1,13 @@
 ---
-name: Feature request
-about: Suggest new feture for this project
+name: Feature improve
+about: Suggest an existing feature improvement
 title: ''
 labels: enhancement
 assignees: Snak21-FPB
 
 ---
 
-# 機能定義書
+# 改善提案書
 ## 内容
 
 ## 要件
