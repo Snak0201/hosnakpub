@@ -12,14 +12,19 @@
 <body>
   <header>
     <nav>
-      <a href="{% url 'articles:index' %}"><img src="{% static 'image/logo.png' %}" height="100px"></a>
+      <a href="{% url 'articles:index' %}"><img src="{% static 'image/logo.png' %}" height="75px"></a>
     </nav>
   </header>
-  {% block content %}
-  {% endblock %}
+  <div class="heading">
+    {% block heading %}{% endblock %}
+  </div>
+  <div class="main">
+    {% block main %}{% endblock %}
+  </div>
   <footer>
     <img src="{% static 'image/logo.png' %}" height="50px" style="padding-right: 5px;">
-    🄫 2023 Hoshinonaka/Snak
+    <p>©️ 2023 Hoshinonaka/Snak</p>
+    
   </footer>
 </body>
 </html>

@@ -4,8 +4,10 @@
 {% block title %}
   記事一覧 | ほしのなか政府
 {% endblock %}
-{% block content %}
-  <h1>記事一覧</h1>  
+{% block heading %}
+  <h1>記事一覧</h1>
+{% endblock %}
+{% block main %}  
   <ul>
     {% for article in articles %}
     <li>{{ article.title }}</li>

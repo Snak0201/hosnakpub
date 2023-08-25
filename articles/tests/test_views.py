@@ -40,7 +40,7 @@ class IndexViewTest(TestCase):
         self.assertContains(self.response, "<footer>", 1)
 
     def test_has_credit(self):
-        self.assertContains(self.response, "🄫 2023 Hoshinonaka/Snak", 1)
+        self.assertContains(self.response, "©️ 2023 Hoshinonaka/Snak", 1)
 
     def test_has_logo_pictures(self):
         self.assertContains(self.response, "logo.png", 2)
