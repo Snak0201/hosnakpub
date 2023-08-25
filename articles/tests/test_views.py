@@ -53,10 +53,11 @@ class ArticleListViewTest(TestCase):
     
     def test_get_view(self):
         self.assertEqual(self.response.status_code, 200)
-        self.assertTemplateUsed(self.response, "articles/list.html")      
-    
-    def test_has_all_published_articles(self):
-        self.assertEqual(self.response.context["articles"].count(), Article.objects.filter(is_published=True).count())  
+        self.assertTemplateUsed(self.response, "articles/list.html")
 
-    def test_articles_are_in_order_of_new_updated(self):
-        pass
+    def test_has_right_title(self):
+        self.assertContains(self.response, "記事一覧 | ほしのなか政府")      
+      
+    def test_has_all_published_articles_in_order_of_new_updated(self):
+        self.assertEqual(self.response.context["articles"].count(), Article.objects.filter(is_published=True).count())
+        self.assertQuerysetEqual(self.response.context["articles"], Article.objects.filter(is_published=True).order_by("-updated_at"))
