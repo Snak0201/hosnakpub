@@ -6,7 +6,14 @@
   <h1>ほしのなか政府 トップページ</h1>
   <p>ほしのなか政府のWebサイトへようこそ</p>
   <h2 class="title">最新記事</h2>
-  <p>準備中です。</p>
+  <p>
+    <ul>
+      {% for article in new_articles %}
+      <li>{{ article.title }}</li>
+      {% endfor %}
+    </ul>
+  </p>
+  <p style="text-align: right;"><a href="{% url 'articles:list' %}">記事一覧へ</a></p>
   <h2 class="title">局一覧</h2>
   <p>準備中です。</p>
   <h2 class="title">全民議会構成</h2>

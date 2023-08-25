@@ -24,7 +24,11 @@ class IndexViewTest(TestCase):
 
     def test_has_new_articles_space(self):
         self.assertContains(self.response, "最新記事", 1)
-        self.assertEqual(self.response.context["articles"].count(), 5)
+        self.assertEqual(self.response.context["new_articles"].count(), 5)
+        self.assertQuerysetEqual(self.response.context["new_articles"], Article.objects.filter(is_published=True).order_by("-updated_at")[:5])
+
+    def test_has_link_to_article_list(self):
+        self.assertContains(self.response, f'href="{reverse("articles:list")}"')
 
     def test_has_bureaus_list_space(self):
         self.assertContains(self.response, "局一覧", 1)
@@ -40,9 +44,6 @@ class IndexViewTest(TestCase):
 
     def test_has_logo_pictures(self):
         self.assertContains(self.response, "logo.png", 2)
-    
-    def test_has_link_to_article_list(self):
-        self.assertContains(self.response, f"href={reverse('articles:list')}")
 
 
 class ArticleListViewTest(TestCase):
