@@ -150,3 +150,9 @@ CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(" ")
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    "extra",
+    "nl2br",
+    "sane_lists"
+]
