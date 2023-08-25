@@ -32,7 +32,6 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
-<<<<<<< HEAD
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,16 +42,6 @@ INSTALLED_APPS = [
     'markdownx',
     'accounts.apps.AccountsConfig',
     'articles.apps.ArticlesConfig'
-=======
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "sass_processor",
-    "accounts.apps.AccountsConfig",
->>>>>>> main
 ]
 
 MIDDLEWARE = [
