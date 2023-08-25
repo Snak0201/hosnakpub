@@ -1,4 +1,4 @@
-name: Linter-Black
+name: Linter-black
 on: push
 
 jobs:
