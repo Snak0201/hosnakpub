@@ -1,0 +1,14 @@
+name: Linter-isort
+on: push
+
+jobs:
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      - uses: isort/isort-action@master
+        with:
+          requirementsFiles: "requirements.txt"
