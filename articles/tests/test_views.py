@@ -91,5 +91,5 @@ class ArticleDetailViewTest(TestCase):
     def test_get_view_draft_without_login(self):
         self.assertEqual(self.response_draft.status_code, 404)
     
-    def test_has_right_title_draft(self):
+    def test_has_right_title_draft_without_login(self):
         self.assertContains(self.response_draft, "<title>ほしのなか政府</title>")
