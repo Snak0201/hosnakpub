@@ -4,22 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Article',
+            name="Article",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255, verbose_name='タイトル')),
-                ('content', models.TextField(verbose_name='内容')),
-                ('is_draft', models.BooleanField(default=True, verbose_name='下書き')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='作成日時')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='最終更新日時')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255, verbose_name="タイトル")),
+                ("content", models.TextField(verbose_name="内容")),
+                ("is_draft", models.BooleanField(default=True, verbose_name="下書き")),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="作成日時"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="最終更新日時"),
+                ),
             ],
         ),
     ]
