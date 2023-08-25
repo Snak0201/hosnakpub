@@ -4,3 +4,5 @@ gunicorn
 libsass
 django-compressor
 django-sass-processor
+black
+isort
