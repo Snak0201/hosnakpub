@@ -1,5 +1,5 @@
 name: Linter-Black
-on: [push, pull_request]
+on: push
 
 jobs:
   lint:
