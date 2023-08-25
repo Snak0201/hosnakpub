@@ -2,7 +2,7 @@ name: Linter-black
 on: push
 
 jobs:
-  lint:
+  black:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
