@@ -20,5 +20,5 @@ import os
 
 urlpatterns = [
     path(os.environ.get("ADMIN_URL"), admin.site.urls),
-    path('', include('accounts.urls')),
+    path("", include("accounts.urls")),
 ]
