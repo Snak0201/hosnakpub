@@ -9,7 +9,7 @@
 {% block main %}  
   <ul>
     {% for article in articles %}
-    <li>{{ article.title }}</li>
+    <li><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

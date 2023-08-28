@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django.db import models
 
 from django.views import generic
 
@@ -23,7 +24,12 @@ class ArticleListView(generic.ListView):
     context_object_name = "articles"
 
 class ArticleDetailView(generic.DetailView):
-    queryset = Article.objects.filter(is_published=True)
     template_name = "articles/detail.html"
     pk_url_kwarg = "article_id"
     context_object_name = "article"
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return Article.objects.all()
+        return Article.objects.filter(is_published=True)
+    

@@ -2,9 +2,10 @@
 {% load sass_tags %}
 {% load static %}
 
-{% block title %}{% if article.is_published %}{{ article.title }} | {% endif %}{% endblock %}
+{% block title %}{% if not article.is_published %}（下書き）{% endif %}{{ article.title }} | {% endblock %}
 
 {% block heading %}
+  {% if not article.is_published %}<div id="draft">（下書き）</div>{% endif %}
   <div id="title">{{ article.title }}</div>
 {% endblock %}
 
