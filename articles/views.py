@@ -1,12 +1,12 @@
 from typing import Any, Dict
 
-from django.views.generic import ListView, TemplateView
+from django.views import generic
 
 from .models import Article
 
 
 # Create your views here.
-class IndexView(TemplateView):
+class IndexView(generic.TemplateView):
     template_name = "articles/index.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -17,7 +17,13 @@ class IndexView(TemplateView):
         return context
 
 
-class ArticleListView(ListView):
+class ArticleListView(generic.ListView):
     queryset = Article.objects.filter(is_published=True).order_by("-updated_at")
     template_name = "articles/list.html"
     context_object_name = "articles"
+
+class ArticleDetailView(generic.DetailView):
+    model = Article
+    template_name = "articles/detail.html"
+    pk_url_kwarg = "article_id"
+    context_object_name = "article"

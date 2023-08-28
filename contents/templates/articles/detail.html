@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static %}
+
+{% block title %}{% if article.is_published %}{{ article.title }} | {% endif %}{% endblock %}
+
+{% block heading %}
+  <div id="title">{{ article.title }}</div>
+{% endblock %}
+
+{% block main %}
+  <div id="created_at">作成日時: {{ article.created_at|date:"Y/m/d H:i" }}</div>
+  <div id="updated_at">更新日時: {{ article.updated_at|date:"Y/m/d H:i" }}</div>
+  <div id="content">{{ article.content }}</div>
+{% endblock %}
