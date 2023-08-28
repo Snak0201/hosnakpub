@@ -7,3 +7,4 @@ django-sass-processor
 django-markdownx
 black
 isort
+freezegun
