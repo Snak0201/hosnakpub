@@ -23,7 +23,7 @@ class ArticleListView(generic.ListView):
     context_object_name = "articles"
 
 class ArticleDetailView(generic.DetailView):
-    model = Article
+    queryset = Article.objects.filter(is_published=True)
     template_name = "articles/detail.html"
     pk_url_kwarg = "article_id"
     context_object_name = "article"

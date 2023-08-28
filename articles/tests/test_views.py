@@ -105,6 +105,7 @@ class ArticleDetailViewTest(TestCase):
 
     def test_get_view_draft_without_login(self):
         self.assertEqual(self.response_draft.status_code, 404)
-
-    def test_has_right_title_draft_without_login(self):
-        self.assertContains(self.response_draft, "<title>ほしのなか政府</title>")
+    
+    def test_does_not_get_view_article_is_not_found(self):
+        response = self.client.get(reverse("articles:detail", kwargs={"article_id": 99}))
+        self.assertEqual(response.status_code, 404)
