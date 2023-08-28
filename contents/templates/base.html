@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load sass_tags %}
+{% load static %}
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% sass_src 'css/base.scss' %}">
+  <link rel="icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="{% url 'articles:index' %}"><img src="{% static 'image/logo.png' %}" height="75px"></a>
+    </nav>
+  </header>
+  <div class="heading">
+    {% block heading %}{% endblock %}
+  </div>
+  <div class="main">
+    {% block main %}{% endblock %}
+  </div>
+  <footer>
+    <img src="{% static 'image/logo.png' %}" height="30px" style="padding-right: 5px;">
+    <p>©️ 2023 Hoshinonaka/Snak</p>
+  </footer>
+</body>
+</html>

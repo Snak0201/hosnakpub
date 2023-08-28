@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static %}
+{% block title %}
+  記事一覧 | ほしのなか政府
+{% endblock %}
+{% block heading %}
+  <h1>記事一覧</h1>
+  <p class="text">記事の一覧です。</p>
+{% endblock %}
+{% block main %}  
+  <ul>
+    {% for article in articles %}
+    <li>{{ article.title }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

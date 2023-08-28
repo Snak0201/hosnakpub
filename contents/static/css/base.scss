@@ -1,0 +1,48 @@
+$ipIgawaAoi: #6F76D0;
+
+body{
+  margin: 0;
+}
+
+nav{
+  height: 75px;
+  width: 100%;
+  background-color: $ipIgawaAoi;
+}
+
+.heading{
+  margin: 10px;
+
+  .text{
+    margin: 10px;
+  }
+}
+
+.main{
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+
+  .title{
+    text-align: center;
+  }
+
+  .text{
+    margin: 10px;
+  }
+
+  .right{
+    text-align: right;
+  }
+}
+
+footer{
+  height: 30px;
+  background-color: $ipIgawaAoi;
+  color: yellow;
+  text-align: center;
+  display: flex;
+	justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "model": "articles.article",
+    "pk": 1,
+    "fields": {
+        "title": "記事1",
+        "content": "記事1",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:01.000Z",
+        "updated_at": "2023-02-01T00:00:01.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 2,
+    "fields": {
+        "title": "記事2",
+        "content": "記事2",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:02.000Z",
+        "updated_at": "2023-02-01T00:00:02.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 3,
+    "fields": {
+        "title": "記事3",
+        "content": "記事3",
+        "is_published": false,
+        "created_at": "2023-02-01T00:00:03.000Z",
+        "updated_at": "2023-02-01T00:00:39.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 4,
+    "fields": {
+        "title": "記事4",
+        "content": "記事4",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:04.000Z",
+        "updated_at": "2023-02-01T00:00:17.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 5,
+    "fields": {
+        "title": "記事5",
+        "content": "記事5",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:05.000Z",
+        "updated_at": "2023-02-01T00:00:55.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 6,
+    "fields": {
+        "title": "記事6",
+        "content": "記事6",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:06.000Z",
+        "updated_at": "2023-02-01T00:00:06.000Z"
+    }
+  },
+  {
+    "model": "articles.article",
+    "pk": 7,
+    "fields": {
+        "title": "記事7",
+        "content": "記事7",
+        "is_published": true,
+        "created_at": "2023-02-01T00:00:07.000Z",
+        "updated_at": "2023-02-01T00:00:38.000Z"
+    }
+  }
+]
