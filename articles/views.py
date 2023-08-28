@@ -1,5 +1,7 @@
 from typing import Any, Dict
-from django.views.generic import TemplateView, ListView
+
+from django.views.generic import ListView, TemplateView
+
 from .models import Article
 
 
@@ -9,8 +11,11 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["new_articles"] = Article.objects.filter(is_published=True).order_by("-updated_at")[:5]
+        context["new_articles"] = Article.objects.filter(is_published=True).order_by(
+            "-updated_at"
+        )[:5]
         return context
+
 
 class ArticleListView(ListView):
     queryset = Article.objects.filter(is_published=True).order_by("-updated_at")

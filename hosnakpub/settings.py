@@ -155,11 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # django-markdownx
 MARKDOWNX_MEDIA_PATH = f"{uuid4()}/"
 
-MARKDOWNX_MARKDOWN_EXTENSIONS = [
-    "extra",
-    "nl2br",
-    "sane_lists"
-]
+MARKDOWNX_MARKDOWN_EXTENSIONS = ["extra", "nl2br", "sane_lists"]
 
 MARKDOWNX_IMAGE_MAX_SIZE = {
     "size": (1920, 1080),
