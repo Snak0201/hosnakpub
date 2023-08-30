@@ -64,6 +64,7 @@ services:
     # ローカルの/staticをコンテナの/staticにマウントする
     volumes:
       - ./static:/static
+      - ./media:/media
     expose:
       - 80
     # ローカルの80番ボートをコンテナの80番ポートとつなぐ
