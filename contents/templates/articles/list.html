@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% load sass_tags %}
 {% load static %}
-{% block title %}
-  記事一覧 | ほしのなか政府
-{% endblock %}
+{% block title %}記事一覧 | {% endblock %}
 {% block heading %}
   <h1>記事一覧</h1>
   <p class="text">記事の一覧です。</p>
@@ -11,7 +9,7 @@
 {% block main %}  
   <ul>
     {% for article in articles %}
-    <li>{{ article.title }}</li>
+    <li><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

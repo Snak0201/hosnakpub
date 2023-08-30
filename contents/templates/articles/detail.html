@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static %}
+
+{% block title %}{% if not article.is_published %}（下書き）{% endif %}{{ article.title }} | {% endblock %}
+
+{% block additional_style %}
+  <link rel="stylesheet" href="{% sass_src 'css/articles/detail.scss' %}">
+{% endblock %}
+
+{% block heading %}
+  {% if not article.is_published %}<div id="draft">（下書き）</div>{% endif %}
+  <h1><div id="title">{{ article.title }}</div></h1>
+  <div id="created_at">作成日時: {{ article.created_at | date:"Y/m/d H:i" }}</div>
+  <div id="updated_at">更新日時: {{ article.updated_at | date:"Y/m/d H:i" }}</div>
+{% endblock %}
+
+{% block main %}
+  <div id="content">{{ article.get_content | safe }}</div>
+{% endblock %}
