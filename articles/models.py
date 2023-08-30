@@ -1,7 +1,7 @@
+import bleach
+from bleach_allowlist import markdown_attrs, markdown_tags
 from django.db import models
 from markdownx.models import MarkdownxField
-import bleach
-from bleach_allowlist import markdown_tags, markdown_attrs
 from markdownx.utils import markdownify
 
 
@@ -21,7 +21,7 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     class Meta:
         verbose_name = "記事"
         verbose_name_plural = "記事"

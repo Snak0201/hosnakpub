@@ -1,6 +1,6 @@
 from typing import Any, Dict
-from django.db import models
 
+from django.db import models
 from django.views import generic
 
 from .models import Article
@@ -23,6 +23,7 @@ class ArticleListView(generic.ListView):
     template_name = "articles/list.html"
     context_object_name = "articles"
 
+
 class ArticleDetailView(generic.DetailView):
     template_name = "articles/detail.html"
     pk_url_kwarg = "article_id"
@@ -32,4 +33,3 @@ class ArticleDetailView(generic.DetailView):
         if self.request.user.is_staff:
             return Article.objects.all()
         return Article.objects.filter(is_published=True)
-    
