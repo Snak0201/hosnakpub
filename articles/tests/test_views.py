@@ -116,8 +116,10 @@ class ArticleDetailViewTest(TestCase):
     def test_has_article_element(self):
         local_created_at = self.published_article.created_at + timedelta(hours=9)
         local_updated_at = self.published_article.updated_at + timedelta(hours=9)
+        print(self.response_published.content)
+        print(self.published_article.get_content())
         self.assertContains(self.response_published, f'<div id="title">{self.published_article.title}</div>')
-        self.assertContains(self.response_published, f'<div id="content">{self.published_article.content}</div>')
+        self.assertContains(self.response_published, f'<div id="content">{self.published_article.get_content()}</div>')
         self.assertContains(self.response_published, f'<div id="created_at">作成日時: {local_created_at.strftime("%Y/%m/%d %H:%M")}</div>')
         self.assertContains(self.response_published, f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>')
 

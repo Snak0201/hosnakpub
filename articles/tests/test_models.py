@@ -41,3 +41,8 @@ class ArticleModelTest(TestCase):
             pass
         self.assertEqual(articles_count, Article.objects.all().count())
 
+    def test_markdown_convert_into_html_content(self):
+        pass
+
+    def test_escape_script_tag_in_content(self):
+        pass
