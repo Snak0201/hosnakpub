@@ -8,3 +8,5 @@ django-markdownx
 black
 isort
 freezegun
+bleach
+bleach-allowlist
