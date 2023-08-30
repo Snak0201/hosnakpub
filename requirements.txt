@@ -10,3 +10,4 @@ isort
 freezegun
 bleach
 bleach-allowlist
+django-cleanup
