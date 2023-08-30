@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 class ArticleModelTest(TestCase):
     @freezegun.freeze_time("2023-02-01 00:00:00")
     def setUp(self):
-        self.article = Article.objects.create(title="テスト記事", content="テスト記事", is_published=True)
+        self.article = Article.objects.create(title="テスト記事", content_with_markdown="テスト記事", is_published=True)
         
     @freezegun.freeze_time("2023-02-01 00:00:00")
     def test_create_article(self):
@@ -23,7 +23,7 @@ class ArticleModelTest(TestCase):
     
     def test_invalid_no_title_article(self):
         articles_count = Article.objects.all().count()
-        article = Article(title=None, content="テスト記事")
+        article = Article(title=None, content_with_markdown="テスト記事")
         try:
             with transaction.atomic():
                 article.save()
@@ -33,7 +33,7 @@ class ArticleModelTest(TestCase):
 
     def test_invalid_no_content_article(self):
         articles_count = Article.objects.all().count()
-        article = Article(title="テスト記事", content=None)
+        article = Article(title="テスト記事", content_with_markdown=None)
         try:
             with transaction.atomic():
                 article.save()
