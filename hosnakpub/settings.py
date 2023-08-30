@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import datetime
 from uuid import uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     "markdownx",
     "accounts.apps.AccountsConfig",
     "articles.apps.ArticlesConfig",
+    # NOTE: https://pypi.org/project/django-cleanup/ より、以下は最後に書く
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
@@ -153,11 +156,11 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # django-markdownx
-MARKDOWNX_MEDIA_PATH = f"{uuid4()}/"
+MARKDOWNX_MEDIA_PATH = datetime.now().strftime("%Y/%m/%d/%H")
 
 MARKDOWNX_MARKDOWN_EXTENSIONS = ["extra", "nl2br", "sane_lists"]
 
 MARKDOWNX_IMAGE_MAX_SIZE = {
     "size": (1920, 1080),
-    "quality": 80,
+    "quality": 10,
 }
