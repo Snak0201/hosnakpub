@@ -1,3 +1,74 @@
+@import "../colors.scss";
+
 #created_at, #updated_at{
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+#content{
+  .idolyprideNagaseMana{
+    background-color: $idolyprideNagaseMana;
+  }
+  .idolyprideNagaseKotono{
+    background-color: $idolyprideNagaseKotono;
+  }
+  .idolyprideIbukiNagisa{
+    background-color: $idolyprideIbukiNagisa;
+  }
+  .idolyprideShiraishiSaki{
+    background-color: $idolyprideShiraishiSaki;
+  }
+  .idolyprideNarumiyaSuzu{
+    background-color: $idolyprideNarumiyaSuzu;
+  }
+  .idolyprideHayasakaMei{
+    background-color: $idolyprideHayasakaMei;
+    color: white;
+  }
+  .idolyprideKawasakiSakura{
+    background-color: $idolyprideKawasakiSakura;
+  }
+  .idolyprideHyodoShizuku{
+    background-color: $idolyprideHyodoShizuku;
+  }
+  .idolyprideShiraishiChisa{
+    background-color: $idolyprideShiraishiChisa;
+  }
+  .idolyprideIchinoseRei{
+    background-color: $idolyprideIchinoseRei;
+  }
+  .idolyprideSaekiHaruko{
+    background-color: $idolyprideSaekiHaruko;
+  }
+  .idolyprideTendoRui{
+    background-color: $idolyprideTendoRui;
+  }
+  .idolyprideSuzumuraYu{
+    background-color: $idolyprideSuzumuraYu;
+  }
+  .idolyprideOkuyamaSumire{
+    background-color: $idolyprideOkuyamaSumire;
+  }
+  .idolyprideKanzakiRio{
+    background-color: $idolyprideKanzakiRio;
+    color: white;
+  }
+  .idolyprideIgawaAoi{
+    background-color: $idolyprideIgawaAoi;
+    color: white;
+  }
+  .idolyprideKomiyamaAi{
+    background-color: $idolyprideKomiyamaAi;
+  }
+  .idolyprideAkazakiKokoro{
+    background-color: $idolyprideAkazakiKokoro;
+  }
+  .idolyprideFran{
+    background-color: $idolyprideThreeX;
+  }
+  .idolyprideKana{
+    background-color: $idolyprideThreeX;
+  }
+  .idolyprideMiho{
+    background-color: $idolyprideThreeX;
+  }
 }
