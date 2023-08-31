@@ -1,13 +1,24 @@
-$ipIgawaAoi: #6F76D0;
+@import "colors.scss";
 
 body{
   margin: 0;
 }
 
 nav{
-  height: 75px;
-  width: 100%;
-  background-color: $ipIgawaAoi;
+  .headerNavigation{
+    height: 75px;
+    width: 100%;
+    background-color: $idolyprideIgawaAoi;
+    display: flex;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    .navItem{
+      margin-left: 10px;
+      color: white;
+      line-height: 75px;
+    }
+  }
 }
 
 .heading{
@@ -44,7 +55,7 @@ nav{
 
 footer{
   height: 30px;
-  background-color: $ipIgawaAoi;
+  background-color: $idolyprideIgawaAoi;
   color: yellow;
   text-align: center;
   display: flex;
