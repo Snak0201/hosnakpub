@@ -1,4 +1,23 @@
-$ipIgawaAoi: #6F76D0;
+$idolyprideNagaseMana: #F44EB4;
+$idolyprideNagaseKotono: #5985DC;
+$idolyprideIbukiNagisa: #F96CA0;
+$idolyprideShiraishiSaki: #64D0B9;
+$idolyprideNarumiyaSuzu: #F2F046;
+$idolyprideHayasakaMei: #E13B4F;
+$idolyprideKawasakiSakura: #FA9A36;
+$idolyprideHyodoShizuku: #99CB9A;
+$idolyprideShiraishiChisa: #E7BAD1;
+$idolyprideIchinoseRei: #A9E1F0;
+$idolyprideSaekiHaruko: #C1A7E4;
+$idolyprideTendoRui: #FDFAF1;
+$idolyprideSuzumuraYu: #ABD069;
+$idolyprideOkuyamaSumire: #FFE590;
+$idolyprideKanzakiRio: #B14F88;
+$idolyprideIgawaAoi: #6F76D0;
+$idolyprideKomiyamaAi: #7ACDEF;
+$idolyprideAkazakiKokoro: #FD9bb4;
+$idolyprideThreeX: #F2F200;
+
 
 body{
   margin: 0;
@@ -8,7 +27,7 @@ nav{
   .headerNavigation{
     height: 75px;
     width: 100%;
-    background-color: $ipIgawaAoi;
+    background-color: $idolyprideIgawaAoi;
     display: flex;
     margin: 0 auto;
     padding: 0;
@@ -55,7 +74,7 @@ nav{
 
 footer{
   height: 30px;
-  background-color: $ipIgawaAoi;
+  background-color: $idolyprideIgawaAoi;
   color: yellow;
   text-align: center;
   display: flex;
