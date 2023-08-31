@@ -56,8 +56,8 @@ class ArticleModelTest(TestCase):
         self.assertEqual(articles_count, Article.objects.all().count())
 
     def test_convert_content(self):
-        article = Article.objects.create(title="テスト記事", content_with_markdown="## 見出し2")
-        self.assertEqual(article.get_content(), "<h2>見出し2</h2>")
+        article = Article.objects.create(title="テスト記事", content_with_markdown='## 見出し2<div class="ipIgawaAoi"></div>')
+        self.assertEqual(article.get_content(), '<h2>見出し2</h2><div class="ipIgawaAoi"></div>')
 
     def test_escape_script_tag_in_content(self):
         article = Article.objects.create(

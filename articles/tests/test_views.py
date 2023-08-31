@@ -47,7 +47,7 @@ class IndexViewTest(TestCase):
         )
 
     def test_has_link_to_article_list(self):
-        self.assertContains(self.response, f'href="{reverse("articles:list")}"')
+        self.assertContains(self.response, f'<a href="{reverse("articles:list")}">記事一覧へ</a>')
 
     def test_has_bureaus_list_space(self):
         self.assertContains(self.response, "局一覧", 1)
@@ -63,6 +63,9 @@ class IndexViewTest(TestCase):
 
     def test_has_logo_pictures(self):
         self.assertContains(self.response, "logo.png", 2)
+    
+    def test_header_nav_has_link_to_article_list(self):
+        self.assertContains(self.response, f'<a class="navItem" href="{reverse("articles:list")}">記事一覧</a>')
 
 
 class ArticleListViewTest(TestCase):
@@ -172,3 +175,7 @@ class ArticleDetailViewTest(TestCase):
             self.response_draft_with_staff,
             f"<title>（下書き）{self.draft_article.title} | ほしのなか政府</title>",
         )
+    
+    def test_has_link_to_article_list(self):
+        self.assertContains(self.response, f'<a href="{reverse("articles:list")}">記事一覧へ</a>')
+        

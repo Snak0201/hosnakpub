@@ -13,7 +13,11 @@
 <body>
   <header>
     <nav>
-      <a href="{% url 'articles:index' %}"><img src="{% static 'image/logo.png' %}" height="75px"></a>
+      
+      <ul class="headerNavigation">
+        <li><a href="{% url 'articles:index' %}"><img src="{% static 'image/logo.png' %}" height="75px"></a></li>
+        <li><a class="navItem" href="{% url 'articles:list' %}">記事一覧</a></li>
+      </ul>
     </nav>
   </header>
   <div class="heading">

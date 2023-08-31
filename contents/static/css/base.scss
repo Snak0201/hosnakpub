@@ -5,9 +5,20 @@ body{
 }
 
 nav{
-  height: 75px;
-  width: 100%;
-  background-color: $ipIgawaAoi;
+  .headerNavigation{
+    height: 75px;
+    width: 100%;
+    background-color: $ipIgawaAoi;
+    display: flex;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    .navItem{
+      margin-left: 10px;
+      color: white;
+      line-height: 75px;
+    }
+  }
 }
 
 .heading{

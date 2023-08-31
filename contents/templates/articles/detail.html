@@ -17,4 +17,5 @@
 
 {% block main %}
   <div id="content">{{ article.get_content | safe }}</div>
+  <div id="list"><a href="{% url 'articles:list' %}">記事一覧へ</a></div>
 {% endblock %}
