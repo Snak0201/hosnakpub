@@ -154,6 +154,7 @@ class ArticleDetailViewTest(TestCase):
             self.response_published,
             f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
         )
+        self.assertContains(self.response_published, f'<a href="{reverse("articles:list")}">記事一覧へ</a>')
 
     def test_does_not_get_view_article_is_not_found(self):
         response = self.client.get(
@@ -175,7 +176,3 @@ class ArticleDetailViewTest(TestCase):
             self.response_draft_with_staff,
             f"<title>（下書き）{self.draft_article.title} | ほしのなか政府</title>",
         )
-    
-    def test_has_link_to_article_list(self):
-        self.assertContains(self.response, f'<a href="{reverse("articles:list")}">記事一覧へ</a>')
-        
