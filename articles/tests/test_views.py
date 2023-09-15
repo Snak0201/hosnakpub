@@ -5,13 +5,24 @@ from django.test import TestCase
 from django.urls import reverse
 
 from articles.models import Article
+from articles.factories import ArticleFactory
+import factory
+import freezegun
 
 
 # Create your tests here.
 class IndexViewTest(TestCase):
-    fixtures = ["articles.json"]
+    @classmethod
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.response = self.client.get(reverse("articles:index"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -74,9 +85,17 @@ class IndexViewTest(TestCase):
 
 
 class ArticleListViewTest(TestCase):
-    fixtures = ["articles.json"]
+    @classmethod
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.response = self.client.get(reverse("articles:list"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -107,15 +126,20 @@ class ArticleListViewTest(TestCase):
 
 
 class ArticleDetailViewTest(TestCase):
-    fixtures = ["articles.json"]
-
     @classmethod
-    def setUpTestData(cls) -> None:
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
             username="Test Staff", password="password", is_staff=True
         )
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.published_article = Article.objects.filter(is_published=True).first()
         self.draft_article = Article.objects.filter(is_published=False).first()
         self.response_published = self.client.get(
