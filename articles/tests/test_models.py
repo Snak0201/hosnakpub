@@ -4,8 +4,8 @@ import freezegun
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 
-from articles.models import Article
 from articles.factories import ArticleFactory
+from articles.models import Article
 
 
 class ArticleModelTest(TestCase):
@@ -57,9 +57,11 @@ class ArticleModelTest(TestCase):
     def test_convert_content(self):
         article = ArticleFactory.build(content_with_markdown="## 見出し2")
         self.assertEqual(article.get_content(), "<h2>見出し2</h2>")
-        article = ArticleFactory.build(content_with_markdown='<div class="ipIgawaAoi"></div>')
+        article = ArticleFactory.build(
+            content_with_markdown='<div class="ipIgawaAoi"></div>'
+        )
         self.assertEqual(article.get_content(), '<div class="ipIgawaAoi"></div>')
 
     def test_escape_script_tag_in_content(self):
-        article = ArticleFactory.build(content_with_markdown='<script>main()</script>')
+        article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
         self.assertNotEqual(article.get_content(), "<script>main()</script>")

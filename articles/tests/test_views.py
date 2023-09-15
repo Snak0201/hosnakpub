@@ -1,13 +1,13 @@
 from datetime import timedelta
 
+import factory
+import freezegun
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from articles.models import Article
 from articles.factories import ArticleFactory
-import factory
-import freezegun
+from articles.models import Article
 
 
 # Create your tests here.
@@ -15,7 +15,9 @@ class IndexViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
-        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
@@ -88,7 +90,9 @@ class ArticleListViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
-        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
@@ -129,7 +133,9 @@ class ArticleDetailViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
-        ArticleFactory.create_batch(5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True)
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
             username="Test Staff", password="password", is_staff=True
