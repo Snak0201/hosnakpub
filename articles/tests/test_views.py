@@ -1,17 +1,30 @@
 from datetime import timedelta
 
+import factory
+import freezegun
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from articles.factories import ArticleFactory
 from articles.models import Article
 
 
 # Create your tests here.
 class IndexViewTest(TestCase):
-    fixtures = ["articles.json"]
+    @classmethod
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.response = self.client.get(reverse("articles:index"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -27,13 +40,15 @@ class IndexViewTest(TestCase):
     def test_has_favicon(self):
         self.assertContains(self.response, "favicon.ico", 1)
 
-    def test_has_navigation_bar(self):
+    def test_has_header_navigation_bar(self):
         self.assertContains(self.response, "<nav>", 1)
-
-    def test_has_new_articles_space(self):
-        self.assertContains(self.response, "最新記事", 1)
+        self.assertContains(
+            self.response,
+            f'<a class="navItem" href="{reverse("articles:list")}">記事一覧</a>',
+        )
 
     def test_has_five_published_articles_in_order_of_new_updated(self):
+        self.assertContains(self.response, "最新記事", 1)
         self.assertEqual(self.response.context["new_articles"].count(), 5)
         self.assertQuerysetEqual(
             self.response.context["new_articles"],
@@ -59,24 +74,26 @@ class IndexViewTest(TestCase):
 
     def test_has_footer(self):
         self.assertContains(self.response, "<footer>", 1)
-
-    def test_has_credit(self):
         self.assertContains(self.response, "©️ 2023 Hoshinonaka/Snak", 1)
 
     def test_has_logo_pictures(self):
         self.assertContains(self.response, "logo.png", 2)
 
-    def test_header_nav_has_link_to_article_list(self):
-        self.assertContains(
-            self.response,
-            f'<a class="navItem" href="{reverse("articles:list")}">記事一覧</a>',
-        )
-
 
 class ArticleListViewTest(TestCase):
-    fixtures = ["articles.json"]
+    @classmethod
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.response = self.client.get(reverse("articles:list"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -107,15 +124,22 @@ class ArticleListViewTest(TestCase):
 
 
 class ArticleDetailViewTest(TestCase):
-    fixtures = ["articles.json"]
-
     @classmethod
-    def setUpTestData(cls) -> None:
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUpTestData(cls):
+        ArticleFactory.create_batch(
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+        )
+        ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
             username="Test Staff", password="password", is_staff=True
         )
 
+    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
         self.published_article = Article.objects.filter(is_published=True).first()
         self.draft_article = Article.objects.filter(is_published=False).first()
         self.response_published = self.client.get(

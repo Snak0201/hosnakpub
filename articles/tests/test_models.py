@@ -4,15 +4,14 @@ import freezegun
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 
+from articles.factories import ArticleFactory
 from articles.models import Article
 
 
 class ArticleModelTest(TestCase):
     @freezegun.freeze_time("2023-02-01 00:00:00")
     def setUp(self):
-        self.article = Article.objects.create(
-            title="テスト記事", content_with_markdown="テスト記事", is_published=True
-        )
+        self.article = ArticleFactory()
 
     @freezegun.freeze_time("2023-02-01 00:00:00")
     def test_create_article(self):
@@ -37,7 +36,7 @@ class ArticleModelTest(TestCase):
 
     def test_invalid_no_title_article(self):
         articles_count = Article.objects.all().count()
-        article = Article(title=None, content_with_markdown="テスト記事")
+        article = ArticleFactory.build(title=None)
         try:
             with transaction.atomic():
                 article.save()
@@ -47,7 +46,7 @@ class ArticleModelTest(TestCase):
 
     def test_invalid_no_content_article(self):
         articles_count = Article.objects.all().count()
-        article = Article(title="テスト記事", content_with_markdown=None)
+        article = ArticleFactory.build(content_with_markdown=None)
         try:
             with transaction.atomic():
                 article.save()
@@ -56,17 +55,13 @@ class ArticleModelTest(TestCase):
         self.assertEqual(articles_count, Article.objects.all().count())
 
     def test_convert_content(self):
-        article_h2 = Article.objects.create(
-            title="テスト記事", content_with_markdown="## 見出し2"
+        article = ArticleFactory.build(content_with_markdown="## 見出し2")
+        self.assertEqual(article.get_content(), "<h2>見出し2</h2>")
+        article = ArticleFactory.build(
+            content_with_markdown='<div class="ipIgawaAoi"></div>'
         )
-        article_div = Article.objects.create(
-            title="テスト記事", content_with_markdown='<div class="ipIgawaAoi"></div>'
-        )
-        self.assertEqual(article_h2.get_content(), "<h2>見出し2</h2>")
-        self.assertEqual(article_div.get_content(), '<div class="ipIgawaAoi"></div>')
+        self.assertEqual(article.get_content(), '<div class="ipIgawaAoi"></div>')
 
     def test_escape_script_tag_in_content(self):
-        article = Article.objects.create(
-            title="テスト記事", content_with_markdown="<script>main()</script>"
-        )
+        article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
         self.assertNotEqual(article.get_content(), "<script>main()</script>")
