@@ -38,4 +38,4 @@ class ArticleDetailView(generic.DetailView):
 class BureauDetailView(generic.DetailView):
     template_name = "articles/bureau.html"
     context_object_name = "bureau"
-    
+    model = Bureau

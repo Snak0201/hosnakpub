@@ -75,7 +75,7 @@ class IndexViewTest(TestCase):
     def test_has_link_to_bureau_detail(self):
         self.assertContains(
             self.response,
-            f'<a href="{reverse("articles:bureau", kwargs={"bureau_slug": self.bureau.slug})}">{self.bureau.name}</a>',
+            f'<a href="{reverse("articles:bureau", kwargs={"slug": self.bureau.slug})}">{self.bureau.name}</a>',
         )
 
 
@@ -95,7 +95,7 @@ class ArticleListViewTest(TestCase):
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            7, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
@@ -217,3 +217,29 @@ class ArticleDetailViewTest(TestCase):
             self.response_draft_with_staff,
             f"<title>（下書き）{self.draft_article.title} | ほしのなか政府</title>",
         )
+
+class BureauDetailViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        BureauFactory.create()
+    
+    def setUp(self):
+        self.bureau = Bureau.objects.first()
+        self.response = self.client.get(reverse("articles:bureau", kwargs={"slug": "test"}))
+    
+    def test_get_view(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "articles/bureau.html")
+    
+    def test_has_title(self):
+        self.assertContains(
+            self.response,
+            f"<title>{self.bureau.name} | ほしのなか政府</title>",
+        )
+    
+    def test_has_bureau_element(self):
+        pass
+    
+    def test_does_not_get_view_bureau_is_not_found(self):
+        response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
+        self.assertEqual(response.status_code, 404)
