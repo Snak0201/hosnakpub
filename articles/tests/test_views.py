@@ -244,7 +244,17 @@ class BureauDetailViewTest(TestCase):
         )
 
     def test_has_bureau_element(self):
-        pass
+        local_updated_at = self.bureau.updated_at + timedelta(hours=9)
+        self.assertContains(self.response, f'<div id="name">{self.bureau.name}</div>')
+        self.assertContains(
+            self.response,
+            f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
+        )
+        self.assertContains(
+            self.response, f'<div id="content">{self.bureau.get_content()}</div>'
+        )
+        self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
+        self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
 
     def test_does_not_get_view_bureau_is_not_found(self):
         response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
