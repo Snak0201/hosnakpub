@@ -25,3 +25,6 @@ class Article(models.Model):
     class Meta:
         verbose_name = "記事"
         verbose_name_plural = "記事"
+
+class Bureau(models.Model):
+    pass

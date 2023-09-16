@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from articles.factories import ArticleFactory
-from articles.models import Article
+from articles.factories import ArticleFactory, BureauFactory
+from articles.models import Article, Bureau
 
 
 # Create your tests here.
@@ -16,9 +16,12 @@ class IndexViewTest(TestCase):
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            7, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
+        BureauFactory.create_batch(
+            5, name=factory.Sequence(lambda n: f"テスト局{n}"), slug=factory.Sequence(lambda n: f"test{n}")
+        )
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
@@ -34,11 +37,9 @@ class IndexViewTest(TestCase):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "articles/index.html")
 
-    def test_has_right_title(self):
-        self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
-
-    def test_has_favicon(self):
+    def test_has_title(self):
         self.assertContains(self.response, "favicon.ico", 1)
+        self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
 
     def test_has_header_navigation_bar(self):
         self.assertContains(self.response, "<nav>", 1)
@@ -68,6 +69,7 @@ class IndexViewTest(TestCase):
 
     def test_has_bureaus_list_space(self):
         self.assertContains(self.response, "局一覧", 1)
+        self.assertQuerysetEqual(self.response.context["bureaus"], Bureau.objects.all())
 
     def test_has_parilament_space(self):
         self.assertContains(self.response, "全民議会構成", 1)

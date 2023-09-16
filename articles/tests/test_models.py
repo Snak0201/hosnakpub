@@ -4,8 +4,8 @@ import freezegun
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 
-from articles.factories import ArticleFactory
-from articles.models import Article
+from articles.factories import ArticleFactory, BureauFactory
+from articles.models import Article, Bureau
 
 
 class ArticleModelTest(TestCase):
@@ -65,3 +65,28 @@ class ArticleModelTest(TestCase):
     def test_escape_script_tag_in_content(self):
         article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
         self.assertNotEqual(article.get_content(), "<script>main()</script>")
+        
+
+class BureauModelTest(TestCase):
+    @freezegun.freeze_time("2023-02-01 01:23:45")
+    def setUp(self):
+        self.bureau = BureauFactory()
+    
+    def test_create_bureau(self):
+        self.assertEqual(
+            datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.created_at
+        )
+        self.assertEqual(
+            datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.updated_at
+        )
+    
+    @freezegun.freeze_time("2023-02-01 12:34:56")
+    def test_update_bureau(self):
+        self.bureau.name = "テスト局（メンテナンス中）"
+        self.bureau.save()
+        self.assertEqual(
+            datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.created_at
+        )
+        self.assertEqual(
+            datetime(2023, 2, 1, 12, 34, 56, tzinfo=timezone.utc), self.bureau.updated_at
+        )
