@@ -35,6 +35,7 @@ class ArticleDetailView(generic.DetailView):
             return Article.objects.all()
         return Article.objects.filter(is_published=True)
 
+
 class BureauDetailView(generic.DetailView):
     template_name = "articles/bureau.html"
     context_object_name = "bureau"

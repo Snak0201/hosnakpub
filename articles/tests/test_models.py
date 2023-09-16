@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 import freezegun
-from django.db import IntegrityError, transaction, DataError
+from django.db import DataError, IntegrityError, transaction
 from django.test import TestCase
 
 from articles.factories import ArticleFactory, BureauFactory
@@ -64,14 +64,14 @@ class ArticleModelTest(TestCase):
     def test_escape_script_tag_in_content(self):
         article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
         self.assertNotEqual(article.get_content(), "<script>main()</script>")
-        
+
 
 class BureauModelTest(TestCase):
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUp(self):
         self.bureau = BureauFactory()
         self.bureaus_count = Bureau.objects.count()
-    
+
     def test_create_bureau(self):
         self.assertEqual(
             datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.created_at
@@ -79,7 +79,7 @@ class BureauModelTest(TestCase):
         self.assertEqual(
             datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.updated_at
         )
-    
+
     @freezegun.freeze_time("2023-02-01 12:34:56")
     def test_update_bureau(self):
         self.bureau.name = "テスト局（メンテ）"
@@ -88,9 +88,10 @@ class BureauModelTest(TestCase):
             datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.created_at
         )
         self.assertEqual(
-            datetime(2023, 2, 1, 12, 34, 56, tzinfo=timezone.utc), self.bureau.updated_at
+            datetime(2023, 2, 1, 12, 34, 56, tzinfo=timezone.utc),
+            self.bureau.updated_at,
         )
-    
+
     def test_invalid_too_long_name_bureau(self):
         bureau = BureauFactory.build(name="12345678901")
         try:

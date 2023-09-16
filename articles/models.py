@@ -26,6 +26,7 @@ class Article(models.Model):
         verbose_name = "記事"
         verbose_name_plural = "記事"
 
+
 class Bureau(models.Model):
     name = models.CharField(verbose_name="局名", max_length=10)
     slug = models.SlugField(verbose_name="slug")

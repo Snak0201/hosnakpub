@@ -20,7 +20,9 @@ class IndexViewTest(TestCase):
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         BureauFactory.create_batch(
-            5, name=factory.Sequence(lambda n: f"テスト局{n}"), slug=factory.Sequence(lambda n: f"test{n}")
+            5,
+            name=factory.Sequence(lambda n: f"テスト局{n}"),
+            slug=factory.Sequence(lambda n: f"test{n}"),
         )
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
@@ -70,14 +72,15 @@ class IndexViewTest(TestCase):
 
     def test_has_bureaus_list(self):
         self.assertContains(self.response, "局一覧", 1)
-        self.assertEqual(self.response.context["bureaus"].count(), Bureau.objects.all().count())
-    
+        self.assertEqual(
+            self.response.context["bureaus"].count(), Bureau.objects.all().count()
+        )
+
     def test_has_link_to_bureau_detail(self):
         self.assertContains(
             self.response,
             f'<a href="{reverse("articles:bureau", kwargs={"slug": self.bureau.slug})}">{self.bureau.name}</a>',
         )
-
 
     def test_has_parilament_space(self):
         self.assertContains(self.response, "全民議会構成", 1)
@@ -218,28 +221,31 @@ class ArticleDetailViewTest(TestCase):
             f"<title>（下書き）{self.draft_article.title} | ほしのなか政府</title>",
         )
 
+
 class BureauDetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         BureauFactory.create()
-    
+
     def setUp(self):
         self.bureau = Bureau.objects.first()
-        self.response = self.client.get(reverse("articles:bureau", kwargs={"slug": "test"}))
-    
+        self.response = self.client.get(
+            reverse("articles:bureau", kwargs={"slug": "test"})
+        )
+
     def test_get_view(self):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "articles/bureau.html")
-    
+
     def test_has_title(self):
         self.assertContains(
             self.response,
             f"<title>{self.bureau.name} | ほしのなか政府</title>",
         )
-    
+
     def test_has_bureau_element(self):
         pass
-    
+
     def test_does_not_get_view_bureau_is_not_found(self):
         response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
         self.assertEqual(response.status_code, 404)
