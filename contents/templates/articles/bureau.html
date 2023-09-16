@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static %}
+
+{% block title %}{{ bureau.name }} | {% endblock %}
+
+{% block additional_style %}
+  <!-- CSSを記事詳細と共有 -->
+  <link rel="stylesheet" href="{% sass_src 'css/articles/detail.scss' %}">
+{% endblock %}
+
+{% block heading %}
+  <h1><div id="name">{{ bureau.name }}</div></h1>
+  <div id="updated_at">更新日時: {{ bureau.updated_at | date:"Y/m/d H:i" }}</div>
+{% endblock %}
+
+{% block main %}
+  <div id="content">{{ bureau.get_content | safe }}</div>
+  <div id="articles"><h2>局記事一覧</h2>
+    <ul>
+      {% for article in articles %}
+      <li><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div id="committees"><h2>委員会一覧</h2></div>
+{% endblock %}

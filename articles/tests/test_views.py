@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from articles.factories import ArticleFactory
-from articles.models import Article
+from articles.factories import ArticleFactory, BureauFactory
+from articles.models import Article, Bureau
 
 
 # Create your tests here.
@@ -16,9 +16,14 @@ class IndexViewTest(TestCase):
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            7, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
+        BureauFactory.create_batch(
+            5,
+            name=factory.Sequence(lambda n: f"テスト局{n}"),
+            slug=factory.Sequence(lambda n: f"test{n}"),
+        )
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
@@ -29,16 +34,15 @@ class IndexViewTest(TestCase):
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
         )
+        self.bureau = Bureau.objects.first()
 
     def test_get_view(self):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "articles/index.html")
 
-    def test_has_right_title(self):
-        self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
-
-    def test_has_favicon(self):
+    def test_has_title(self):
         self.assertContains(self.response, "favicon.ico", 1)
+        self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
 
     def test_has_header_navigation_bar(self):
         self.assertContains(self.response, "<nav>", 1)
@@ -66,8 +70,17 @@ class IndexViewTest(TestCase):
             self.response, f'<a href="{reverse("articles:list")}">記事一覧へ</a>'
         )
 
-    def test_has_bureaus_list_space(self):
+    def test_has_bureaus_list(self):
         self.assertContains(self.response, "局一覧", 1)
+        self.assertEqual(
+            self.response.context["bureaus"].count(), Bureau.objects.all().count()
+        )
+
+    def test_has_link_to_bureau_detail(self):
+        self.assertContains(
+            self.response,
+            f'<a href="{reverse("articles:bureau", kwargs={"slug": self.bureau.slug})}">{self.bureau.name}</a>',
+        )
 
     def test_has_parilament_space(self):
         self.assertContains(self.response, "全民議会構成", 1)
@@ -85,7 +98,7 @@ class ArticleListViewTest(TestCase):
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            7, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
 
@@ -127,8 +140,12 @@ class ArticleDetailViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
+        BureauFactory.create()
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            5,
+            title=factory.Sequence(lambda n: f"公開記事{n}"),
+            is_published=True,
+            bureau=Bureau.objects.first(),
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
@@ -165,7 +182,6 @@ class ArticleDetailViewTest(TestCase):
         )
 
     def test_has_article_element(self):
-        local_created_at = self.published_article.created_at + timedelta(hours=9)
         local_updated_at = self.published_article.updated_at + timedelta(hours=9)
         self.assertContains(
             self.response_published,
@@ -175,13 +191,14 @@ class ArticleDetailViewTest(TestCase):
             self.response_published,
             f'<div id="content">{self.published_article.get_content()}</div>',
         )
-        self.assertContains(
-            self.response_published,
-            f'<div id="created_at">作成日時: {local_created_at.strftime("%Y/%m/%d %H:%M")}</div>',
-        )
+
         self.assertContains(
             self.response_published,
             f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
+        )
+        self.assertContains(
+            self.response_published,
+            f'<a href="{reverse("articles:bureau", kwargs={"slug": self.published_article.bureau.slug})}">{self.published_article.bureau.name}',
         )
         self.assertContains(
             self.response_published, f'<a href="{reverse("articles:list")}">記事一覧へ</a>'
@@ -207,3 +224,56 @@ class ArticleDetailViewTest(TestCase):
             self.response_draft_with_staff,
             f"<title>（下書き）{self.draft_article.title} | ほしのなか政府</title>",
         )
+
+
+class BureauDetailViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        BureauFactory.create()
+        ArticleFactory.create(bureau=Bureau.objects.first())
+
+    def setUp(self):
+        self.bureau = Bureau.objects.first()
+        self.response = self.client.get(
+            reverse("articles:bureau", kwargs={"slug": "test"})
+        )
+        self.article = Article.objects.filter(bureau=self.bureau).first()
+
+    def test_get_view(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "articles/bureau.html")
+
+    def test_has_title(self):
+        self.assertContains(
+            self.response,
+            f"<title>{self.bureau.name} | ほしのなか政府</title>",
+        )
+
+    def test_has_bureau_element(self):
+        local_updated_at = self.bureau.updated_at + timedelta(hours=9)
+        self.assertContains(self.response, f'<div id="name">{self.bureau.name}</div>')
+        self.assertContains(
+            self.response,
+            f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
+        )
+        self.assertContains(
+            self.response, f'<div id="content">{self.bureau.get_content()}</div>'
+        )
+        self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
+        self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
+
+    def test_has_bureau_articles(self):
+        self.assertEqual(
+            self.response.context["articles"].count(),
+            Article.objects.filter(bureau=self.bureau).count(),
+        )
+
+    def test_link_to_article_detail(self):
+        self.assertContains(
+            self.response,
+            f'<a href="{reverse("articles:detail", kwargs={"article_id": self.article.id})}">{self.article.title}</a>',
+        )
+
+    def test_does_not_get_view_bureau_is_not_found(self):
+        response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
+        self.assertEqual(response.status_code, 404)
