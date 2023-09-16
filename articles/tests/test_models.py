@@ -64,13 +64,13 @@ class ArticleModelTest(TestCase):
     def test_escape_script_tag_in_content(self):
         article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
         self.assertNotEqual(article.get_content(), "<script>main()</script>")
-    
+
     def test_valid_article_relates_bureau(self):
         BureauFactory.create()
         article = ArticleFactory.build(bureau=Bureau.objects.first())
         article.save()
         self.assertEqual(self.articles_count + 1, Article.objects.count())
-    
+
     def test_valid_article_does_not_relate_bureau(self):
         article = ArticleFactory.build(bureau=None)
         article.save()

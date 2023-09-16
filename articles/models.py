@@ -25,11 +25,14 @@ class Bureau(models.Model):
         verbose_name = "局"
         verbose_name_plural = "局"
 
+
 class Article(models.Model):
     title = models.CharField(verbose_name="タイトル", max_length=255)
     content_with_markdown = MarkdownxField(verbose_name="内容のマークダウン記述")
     is_published = models.BooleanField(verbose_name="公開", default=False)
-    bureau = models.ForeignKey(Bureau, on_delete=models.SET_NULL, verbose_name="記事局", blank=True, null=True)
+    bureau = models.ForeignKey(
+        Bureau, on_delete=models.SET_NULL, verbose_name="記事局", blank=True, null=True
+    )
     created_at = models.DateTimeField(verbose_name="作成日時", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="最終更新日時", auto_now=True)
 

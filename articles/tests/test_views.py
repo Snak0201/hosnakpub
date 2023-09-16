@@ -142,7 +142,10 @@ class ArticleDetailViewTest(TestCase):
     def setUpTestData(cls):
         BureauFactory.create()
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True, bureau=Bureau.objects.first()
+            5,
+            title=factory.Sequence(lambda n: f"公開記事{n}"),
+            is_published=True,
+            bureau=Bureau.objects.first(),
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
@@ -188,7 +191,7 @@ class ArticleDetailViewTest(TestCase):
             self.response_published,
             f'<div id="content">{self.published_article.get_content()}</div>',
         )
-    
+
         self.assertContains(
             self.response_published,
             f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
@@ -258,12 +261,18 @@ class BureauDetailViewTest(TestCase):
         )
         self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
         self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
-    
+
     def test_has_bureau_articles(self):
-        self.assertEqual(self.response.context["articles"].count(), Article.objects.filter(bureau=self.bureau).count())
+        self.assertEqual(
+            self.response.context["articles"].count(),
+            Article.objects.filter(bureau=self.bureau).count(),
+        )
 
     def test_link_to_article_detail(self):
-        self.assertContains(self.response, f'<a href="{reverse("articles:detail", kwargs={"article_id": self.article.id})}">{self.article.title}</a>')
+        self.assertContains(
+            self.response,
+            f'<a href="{reverse("articles:detail", kwargs={"article_id": self.article.id})}">{self.article.title}</a>',
+        )
 
     def test_does_not_get_view_bureau_is_not_found(self):
         response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
