@@ -3,7 +3,7 @@ from typing import Any, Dict
 from django.db import models
 from django.views import generic
 
-from .models import Article
+from .models import Article, Bureau
 
 
 # Create your views here.
@@ -15,6 +15,7 @@ class IndexView(generic.TemplateView):
         context["new_articles"] = Article.objects.filter(is_published=True).order_by(
             "-updated_at"
         )[:5]
+        context["bureaus"] = Bureau.objects.all()
         return context
 
 
@@ -33,3 +34,8 @@ class ArticleDetailView(generic.DetailView):
         if self.request.user.is_staff:
             return Article.objects.all()
         return Article.objects.filter(is_published=True)
+
+class BureauDetailView(generic.DetailView):
+    template_name = "articles/bureau.html"
+    context_object_name = "bureau"
+    

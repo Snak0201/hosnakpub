@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static %}
+
+{% block title %}{{ bureau.name }} | {% endblock %}
+
+{% block additional_style %}
+  <!-- CSSを記事詳細と共有 -->
+  <link rel="stylesheet" href="{% sass_src 'css/articles/detail.scss' %}">
+{% endblock %}
+
+{% block heading %}
+  <h1><div id="name">{{ bureau.name }}</div></h1>
+  <div id="updated_at">更新日時: {{ bureau.updated_at | date:"Y/m/d H:i" }}</div>
+{% endblock %}
+
+{% block main %}
+  <div id="content">{{ bureau.get_content | safe }}</div>
+{% endblock %}

@@ -32,6 +32,7 @@ class IndexViewTest(TestCase):
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
         )
+        self.bureau = Bureau.objects.first()
 
     def test_get_view(self):
         self.assertEqual(self.response.status_code, 200)
@@ -67,9 +68,16 @@ class IndexViewTest(TestCase):
             self.response, f'<a href="{reverse("articles:list")}">記事一覧へ</a>'
         )
 
-    def test_has_bureaus_list_space(self):
+    def test_has_bureaus_list(self):
         self.assertContains(self.response, "局一覧", 1)
-        self.assertQuerysetEqual(self.response.context["bureaus"], Bureau.objects.all())
+        self.assertEqual(self.response.context["bureaus"].count(), Bureau.objects.all().count())
+    
+    def test_has_link_to_bureau_detail(self):
+        self.assertContains(
+            self.response,
+            f'<a href="{reverse("articles:bureau", kwargs={"bureau_slug": self.bureau.slug})}">{self.bureau.name}</a>',
+        )
+
 
     def test_has_parilament_space(self):
         self.assertContains(self.response, "全民議会構成", 1)

@@ -82,7 +82,7 @@ class BureauModelTest(TestCase):
     
     @freezegun.freeze_time("2023-02-01 12:34:56")
     def test_update_bureau(self):
-        self.bureau.name = "テスト局（メンテナンス中）"
+        self.bureau.name = "テスト局（メンテ）"
         self.bureau.save()
         self.assertEqual(
             datetime(2023, 2, 1, 1, 23, 45, tzinfo=timezone.utc), self.bureau.created_at
@@ -90,3 +90,15 @@ class BureauModelTest(TestCase):
         self.assertEqual(
             datetime(2023, 2, 1, 12, 34, 56, tzinfo=timezone.utc), self.bureau.updated_at
         )
+
+    def test_convert_content(self):
+        bureau = BureauFactory.build(content_with_markdown="## 見出し2")
+        self.assertEqual(bureau.get_content(), "<h2>見出し2</h2>")
+        bureau = BureauFactory.build(
+            content_with_markdown='<div class="ipIgawaAoi"></div>'
+        )
+        self.assertEqual(bureau.get_content(), '<div class="ipIgawaAoi"></div>')
+
+    def test_escape_script_tag_in_content(self):
+        bureau = BureauFactory.build(content_with_markdown="<script>main()</script>")
+        self.assertNotEqual(bureau.get_content(), "<script>main()</script>")
