@@ -4,6 +4,8 @@ from django.db import models
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
 
+from contents.utils import markdown_to_content
+
 
 # Create your models here.
 class Article(models.Model):
@@ -14,10 +16,7 @@ class Article(models.Model):
     updated_at = models.DateTimeField(verbose_name="最終更新日時", auto_now=True)
 
     def get_content(self):
-        raw_html = markdownify(self.content_with_markdown)
-        markdown_attrs["*"] = ["class", "id"]
-        markdown_attrs["img"] = ["src", "alt", "title", "width", "height"]
-        return bleach.clean(raw_html, tags=markdown_tags, attributes=markdown_attrs)
+        return markdown_to_content(self.content_with_markdown)
 
     def __str__(self):
         return self.title
@@ -35,10 +34,7 @@ class Bureau(models.Model):
     updated_at = models.DateTimeField(verbose_name="最終更新日時", auto_now=True)
 
     def get_content(self):
-        raw_html = markdownify(self.content_with_markdown)
-        markdown_attrs["*"] = ["class", "id"]
-        markdown_attrs["img"] = ["src", "alt", "title", "width", "height"]
-        return bleach.clean(raw_html, tags=markdown_tags, attributes=markdown_attrs)
+        return markdown_to_content(self.content_with_markdown)
 
     def __str__(self):
         return self.name

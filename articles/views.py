@@ -10,7 +10,7 @@ from .models import Article, Bureau
 class IndexView(generic.TemplateView):
     template_name = "articles/index.html"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["new_articles"] = Article.objects.filter(is_published=True).order_by(
             "-updated_at"
@@ -40,3 +40,8 @@ class BureauDetailView(generic.DetailView):
     template_name = "articles/bureau.html"
     context_object_name = "bureau"
     model = Bureau
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        # context["articles"] =
+        return context
