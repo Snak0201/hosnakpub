@@ -11,8 +11,12 @@
 {% block heading %}
   {% if not article.is_published %}<div id="draft">（下書き）</div>{% endif %}
   <h1><div id="title">{{ article.title }}</div></h1>
-  <div id="created_at">作成日時: {{ article.created_at | date:"Y/m/d H:i" }}</div>
   <div id="updated_at">更新日時: {{ article.updated_at | date:"Y/m/d H:i" }}</div>
+  <div id="bureau">
+    {% if article.bureau %}
+      局: <a href="{% url 'articles:bureau' article.bureau.slug %}">{{ article.bureau.name }}</a>
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block main %}

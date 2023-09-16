@@ -140,8 +140,9 @@ class ArticleDetailViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
+        BureauFactory.create()
         ArticleFactory.create_batch(
-            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
+            5, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True, bureau=Bureau.objects.first()
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
         get_user_model().objects.create_user(
@@ -178,7 +179,6 @@ class ArticleDetailViewTest(TestCase):
         )
 
     def test_has_article_element(self):
-        local_created_at = self.published_article.created_at + timedelta(hours=9)
         local_updated_at = self.published_article.updated_at + timedelta(hours=9)
         self.assertContains(
             self.response_published,
@@ -188,13 +188,14 @@ class ArticleDetailViewTest(TestCase):
             self.response_published,
             f'<div id="content">{self.published_article.get_content()}</div>',
         )
-        self.assertContains(
-            self.response_published,
-            f'<div id="created_at">作成日時: {local_created_at.strftime("%Y/%m/%d %H:%M")}</div>',
-        )
+    
         self.assertContains(
             self.response_published,
             f'<div id="updated_at">更新日時: {local_updated_at.strftime("%Y/%m/%d %H:%M")}</div>',
+        )
+        self.assertContains(
+            self.response_published,
+            f'<a href="{reverse("articles:bureau", kwargs={"slug": self.published_article.bureau.slug})}">{self.published_article.bureau.name}',
         )
         self.assertContains(
             self.response_published, f'<a href="{reverse("articles:list")}">記事一覧へ</a>'
