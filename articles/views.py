@@ -43,5 +43,5 @@ class BureauDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
-        # context["articles"] =
+        context["articles"] = Article.objects.filter(bureau=context["bureau"])
         return context

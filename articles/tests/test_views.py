@@ -226,12 +226,14 @@ class BureauDetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         BureauFactory.create()
+        ArticleFactory.create(bureau=Bureau.objects.first())
 
     def setUp(self):
         self.bureau = Bureau.objects.first()
         self.response = self.client.get(
             reverse("articles:bureau", kwargs={"slug": "test"})
         )
+        self.article = Article.objects.filter(bureau=self.bureau).first()
 
     def test_get_view(self):
         self.assertEqual(self.response.status_code, 200)
@@ -255,6 +257,12 @@ class BureauDetailViewTest(TestCase):
         )
         self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
         self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
+    
+    def test_has_bureau_articles(self):
+        self.assertEqual(self.response.context["articles"].count(), Article.objects.filter(bureau=self.bureau).count())
+
+    def test_link_to_article_detail(self):
+        self.assertContains(self.response, f'<a href="{reverse("articles:detail", kwargs={"article_id": self.article.id})}">{self.article.title}</a>')
 
     def test_does_not_get_view_bureau_is_not_found(self):
         response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
