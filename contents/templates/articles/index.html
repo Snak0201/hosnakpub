@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load sass_tags %}
 {% load static %}
+{% block additional_style %}
+<meta name="description" content="個人ブログ・ほしのなか政府のWebサイトへようこそ。">
+{% endblock %}
 {% block heading %}
   <h1>ほしのなか政府 トップページ</h1>
-  <p class="text">ほしのなか政府のWebサイトへようこそ。</p>
+  <p class="text">ほしのなか政府のWebサイトへようこそ</p>
 {% endblock %}
 {% block main %}
   <h2 class="title">最新記事</h2>
