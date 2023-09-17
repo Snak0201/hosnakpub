@@ -46,9 +46,11 @@ class IndexViewTest(TestCase):
     def test_has_title(self):
         self.assertContains(self.response, "favicon.ico", 1)
         self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
-    
+
     def test_has_description(self):
-        self.assertRegex(self.response.content.decode(), r'<meta name="description" content=.+>')
+        self.assertRegex(
+            self.response.content.decode(), r'<meta name="description" content=.+>'
+        )
 
     def test_has_header_navigation_bar(self):
         self.assertContains(self.response, "<nav>", 1)
@@ -71,7 +73,8 @@ class IndexViewTest(TestCase):
             f'<a href="{reverse("articles:detail", kwargs={"article_id": self.newest_article.id})}">{self.newest_article.title}</a>',
         )
         self.assertContains(
-            self.response, f'<a href="{reverse("articles:detail", kwargs={"article_id": 1})}">'
+            self.response,
+            f'<a href="{reverse("articles:detail", kwargs={"article_id": 1})}">',
         )
 
     def test_has_link_to_article_list(self):
@@ -272,8 +275,12 @@ class BureauDetailViewTest(TestCase):
         self.assertContains(
             self.response, f'<div id="content">{self.bureau.get_content()}</div>'
         )
-        self.assertContains(self.response, f'<div id="articles"><span class="title"><h2>局記事一覧</h2>')
-        self.assertContains(self.response, f'<div id="committees"><span class="title"><h2>委員会一覧</h2>')
+        self.assertContains(
+            self.response, f'<div id="articles"><span class="title"><h2>局記事一覧</h2>'
+        )
+        self.assertContains(
+            self.response, f'<div id="committees"><span class="title"><h2>委員会一覧</h2>'
+        )
 
     def test_has_bureau_articles(self):
         self.assertEqual(
