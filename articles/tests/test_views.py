@@ -246,12 +246,12 @@ class BureauDetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         BureauFactory.create()
-        ArticleFactory.create(bureau=Bureau.objects.first())
+        ArticleFactory.create(bureau=Bureau.objects.first(), is_published=True)
 
     def setUp(self):
         self.bureau = Bureau.objects.first()
         self.response = self.client.get(
-            reverse("articles:bureau", kwargs={"slug": "test"})
+            reverse("articles:bureau", kwargs={"slug": self.bureau.slug})
         )
         self.article = Article.objects.filter(bureau=self.bureau).first()
 
@@ -297,3 +297,13 @@ class BureauDetailViewTest(TestCase):
     def test_does_not_get_view_bureau_is_not_found(self):
         response = self.client.get(reverse("articles:bureau", kwargs={"slug": "99"}))
         self.assertEqual(response.status_code, 404)
+
+    def test_does_not_have_link_to_draft_articles(self):
+        ArticleFactory.create(bureau=self.bureau)
+        response = self.client.get(
+            reverse("articles:bureau", kwargs={"slug": self.bureau.slug})
+        )
+        self.assertEqual(
+            self.response.context["articles"].count(),
+            response.context["articles"].count(),
+        )
