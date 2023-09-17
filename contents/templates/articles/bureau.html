@@ -16,12 +16,12 @@
 
 {% block main %}
   <div id="content">{{ bureau.get_content | safe }}</div>
-  <div id="articles"><h2>局記事一覧</h2>
+  <div id="articles"><span class="title"><h2>局記事一覧</h2></span>
     <ul>
       {% for article in articles %}
       <li><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></li>
       {% endfor %}
     </ul>
   </div>
-  <div id="committees"><h2>委員会一覧</h2></div>
+  <div id="committees"><span class="title"><h2>委員会一覧</h2></span></div>
 {% endblock %}

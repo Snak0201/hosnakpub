@@ -259,8 +259,8 @@ class BureauDetailViewTest(TestCase):
         self.assertContains(
             self.response, f'<div id="content">{self.bureau.get_content()}</div>'
         )
-        self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
-        self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
+        self.assertContains(self.response, f'<div id="articles"><span class="title"><h2>局記事一覧</h2>')
+        self.assertContains(self.response, f'<div id="committees"><span class="title"><h2>委員会一覧</h2>')
 
     def test_has_bureau_articles(self):
         self.assertEqual(
