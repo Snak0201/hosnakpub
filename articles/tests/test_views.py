@@ -12,6 +12,12 @@ from articles.models import Article, Bureau
 
 # Create your tests here.
 class IndexViewTest(TestCase):
+    @freezegun.freeze_time("2023-02-01 12:34:56")
+    def article_update():
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
+
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
@@ -24,12 +30,9 @@ class IndexViewTest(TestCase):
             name=factory.Sequence(lambda n: f"テスト局{n}"),
             slug=factory.Sequence(lambda n: f"test{n}"),
         )
+        cls.article_update()
 
-    @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
-        new_article = Article.objects.first()
-        new_article.content = "NEW"
-        new_article.save()
         self.response = self.client.get(reverse("articles:index"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -43,6 +46,11 @@ class IndexViewTest(TestCase):
     def test_has_title(self):
         self.assertContains(self.response, "favicon.ico", 1)
         self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
+
+    def test_has_description(self):
+        self.assertRegex(
+            self.response.content.decode(), r'<meta name="description" content=.+>'
+        )
 
     def test_has_header_navigation_bar(self):
         self.assertContains(self.response, "<nav>", 1)
@@ -63,6 +71,10 @@ class IndexViewTest(TestCase):
         self.assertContains(
             self.response,
             f'<a href="{reverse("articles:detail", kwargs={"article_id": self.newest_article.id})}">{self.newest_article.title}</a>',
+        )
+        self.assertContains(
+            self.response,
+            f'<a href="{reverse("articles:detail", kwargs={"article_id": 1})}">',
         )
 
     def test_has_link_to_article_list(self):
@@ -94,6 +106,12 @@ class IndexViewTest(TestCase):
 
 
 class ArticleListViewTest(TestCase):
+    @freezegun.freeze_time("2023-02-01 12:34:56")
+    def article_update():
+        new_article = Article.objects.first()
+        new_article.content = "NEW"
+        new_article.save()
+
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")
     def setUpTestData(cls):
@@ -101,12 +119,10 @@ class ArticleListViewTest(TestCase):
             7, title=factory.Sequence(lambda n: f"公開記事{n}"), is_published=True
         )
         ArticleFactory.create_batch(3, title=factory.Sequence(lambda n: f"非公開記事{n}"))
+        cls.article_update()
 
     @freezegun.freeze_time("2023-02-01 12:34:56")
     def setUp(self):
-        new_article = Article.objects.first()
-        new_article.content = "NEW"
-        new_article.save()
         self.response = self.client.get(reverse("articles:list"))
         self.newest_article = (
             Article.objects.filter(is_published=True).order_by("-updated_at").first()
@@ -259,8 +275,12 @@ class BureauDetailViewTest(TestCase):
         self.assertContains(
             self.response, f'<div id="content">{self.bureau.get_content()}</div>'
         )
-        self.assertContains(self.response, f'<div id="articles"><h2>局記事一覧</h2>')
-        self.assertContains(self.response, f'<div id="committees"><h2>委員会一覧</h2></div>')
+        self.assertContains(
+            self.response, f'<div id="articles"><span class="title"><h2>局記事一覧</h2>'
+        )
+        self.assertContains(
+            self.response, f'<div id="committees"><span class="title"><h2>委員会一覧</h2>'
+        )
 
     def test_has_bureau_articles(self):
         self.assertEqual(

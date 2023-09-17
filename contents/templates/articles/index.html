@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load sass_tags %}
 {% load static %}
+{% block additional_style %}
+<meta name="description" content="個人ブログ・ほしのなか政府のWebサイトへようこそ。">
+{% endblock %}
 {% block heading %}
   <h1>ほしのなか政府 トップページ</h1>
   <p class="text">ほしのなか政府のWebサイトへようこそ</p>
@@ -21,6 +24,8 @@
       <li><a href="{% url 'articles:bureau' bureau.slug %}">{{ bureau.name }}</a></li>
       {% endfor %}
     </ul>
+  <h2 class="title">ほしのなか政府について</h2>
+  <p class="text">ほしのなか政府については、<a href="{% url 'articles:detail' 1 %}">こちらの記事</a>をご覧ください。</p>
   <h2 class="title">全民議会構成</h2>
   <div class="infogram-embed" data-id="c1721866-5bee-4218-93cd-35496abbf5bc" data-type="interactive" data-title="全民議会" style="height: auto;max-width: 500px;margin: 0 auto;"></div>
     <script>!function(e,i,n,s){var t="InfogramEmbeds",d=e.getElementsByTagName("script")[0];if(window[t]&&window[t].initialized)window[t].process&&window[t].process();else if(!e.getElementById(n)){var o=e.createElement("script");o.async=1,o.id=n,o.src="https://e.infogram.com/js/dist/embed-loader-min.js",d.parentNode.insertBefore(o,d)}}(document,0,"infogram-async");</script>
