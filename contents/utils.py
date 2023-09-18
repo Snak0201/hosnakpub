@@ -6,7 +6,7 @@ from markdownx.utils import markdownify
 def markdown_to_content(markdown_text):
     raw_html = markdownify(markdown_text)
     tags = markdown_tags
-    tags += ["table", "thead", "tr", "th", "td","tbody"]
+    tags += ["table", "thead", "tr", "th", "td", "tbody"]
     markdown_attrs["*"] = ["class", "id"]
     markdown_attrs["tr"] = ["style"]
     markdown_attrs["th"] = ["style"]
