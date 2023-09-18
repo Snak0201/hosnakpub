@@ -60,6 +60,9 @@ class ArticleModelTest(TestCase):
             content_with_markdown='<div class="ipIgawaAoi"></div>'
         )
         self.assertEqual(article.get_content(), '<div class="ipIgawaAoi"></div>')
+        article = ArticleFactory.build(content_with_markdown="|head|head|\n|----|----|\n|value|value|")
+        self.assertEqual(article.get_content(), "<table>\n<thead>\n<tr>\n<th>head</th>\n<th>head</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>value</td>\n<td>value</td>\n</tr>\n</tbody>\n</table>")
+        
 
     def test_escape_script_tag_in_content(self):
         article = ArticleFactory.build(content_with_markdown="<script>main()</script>")
@@ -115,6 +118,8 @@ class BureauModelTest(TestCase):
     def test_convert_content(self):
         bureau = BureauFactory.build(content_with_markdown="## 見出し2")
         self.assertEqual(bureau.get_content(), "<h2>見出し2</h2>")
+        bureau = BureauFactory.build(content_with_markdown="|head|head|\n|----|----|\n|value|value|")
+        self.assertEqual(bureau.get_content(), "<table>\n<thead>\n<tr>\n<th>head</th>\n<th>head</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>value</td>\n<td>value</td>\n</tr>\n</tbody>\n</table>")
         bureau = BureauFactory.build(
             content_with_markdown='<div class="ipIgawaAoi"></div>'
         )
