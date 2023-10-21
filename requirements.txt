@@ -11,4 +11,7 @@ freezegun
 bleach
 bleach-allowlist
 django-cleanup
+
 factory_boy
+selenium
+webdriver-manager
