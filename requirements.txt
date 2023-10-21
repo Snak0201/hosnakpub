@@ -14,4 +14,3 @@ django-cleanup
 
 factory_boy
 selenium
-webdriver-manager

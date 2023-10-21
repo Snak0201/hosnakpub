@@ -10,7 +10,7 @@ WORKDIR /code
 # ローカルのrequirements.txtをコンテナの/codeフォルダ直下に置く
 COPY requirements.txt /code/
 # pkg-configのインストール
-RUN apt update && apt install sudo && sudo apt install -y pkg-config default-libmysqlclient-dev gcc
+RUN apt update && apt install sudo && sudo apt install -y pkg-config default-libmysqlclient-dev gcc chromium-driver
 # コンテナ内でpipをアップグレード
 RUN pip install --upgrade pip
 # pip install -r requirements.txtを実行

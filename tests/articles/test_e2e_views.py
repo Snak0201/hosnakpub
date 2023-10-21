@@ -1,14 +1,16 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.chrome.options import Options
+
 
 class E2EIndexViewTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         options = Options()
-        cls.selenium = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        cls.selenium = webdriver.Chrome(options=options)
     
     @classmethod
     def tearDownClass(cls):
@@ -16,4 +18,4 @@ class E2EIndexViewTest(StaticLiveServerTestCase):
         super().tearDownClass()
     
     def test_get_view(self):
-        pass
+        print(self.selenium.get(self.live_server_url))
