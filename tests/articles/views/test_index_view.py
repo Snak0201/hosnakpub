@@ -9,6 +9,7 @@ from django.urls import reverse
 from articles.factories import ArticleFactory, BureauFactory
 from articles.models import Article, Bureau
 from tests.utils import E2ETestCase
+from selenium.webdriver.common.by import By
 
 
 class IndexViewUnitTest(TestCase):
@@ -109,3 +110,4 @@ class IndexViewE2ETest(E2ETestCase):
     def test_get_view(self):
         self.selenium.get(self.live_server_url)
         self.assertEqual("ほしのなか政府", self.selenium.title)
+        print(self.selenium.find_element(By.TAG_NAME, "a").text)
