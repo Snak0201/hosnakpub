@@ -18,4 +18,6 @@ class E2EIndexViewTest(StaticLiveServerTestCase):
         super().tearDownClass()
     
     def test_get_view(self):
-        print(self.selenium.get(self.live_server_url))
+        self.selenium.get(self.live_server_url)
+        self.assertEqual("ほしのなか政府", self.selenium.title)
+        
