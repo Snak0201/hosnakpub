@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-class E2EIndexViewTest(StaticLiveServerTestCase):
+class E2ETestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -16,7 +16,4 @@ class E2EIndexViewTest(StaticLiveServerTestCase):
     def tearDownClass(cls):
         cls.selenium.quit()
         super().tearDownClass()
-
-    def test_get_view(self):
-        self.selenium.get(self.live_server_url)
-        self.assertEqual("ほしのなか政府", self.selenium.title)
+        
