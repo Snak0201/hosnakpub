@@ -3,6 +3,11 @@ version: "3.9"
 
 # db(MySQL),app(Django)のコンテナを作成
 services:
+  test:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - 4444:4444
+
   db:
     # コンテナ名をmysqlに設定
     container_name: hosnakpub-db
