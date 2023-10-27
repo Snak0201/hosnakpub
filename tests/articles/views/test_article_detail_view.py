@@ -9,6 +9,7 @@ from django.urls import reverse
 from articles.factories import ArticleFactory, BureauFactory
 from articles.models import Article, Bureau
 
+
 class ArticleDetailViewTest(TestCase):
     @classmethod
     @freezegun.freeze_time("2023-02-01 01:23:45")

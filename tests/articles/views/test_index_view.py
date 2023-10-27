@@ -5,11 +5,11 @@ import freezegun
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from selenium.webdriver.common.by import By
 
 from articles.factories import ArticleFactory, BureauFactory
 from articles.models import Article, Bureau
 from tests.utils import E2ETestCase
-from selenium.webdriver.common.by import By
 
 
 class IndexViewUnitTest(TestCase):
@@ -44,20 +44,9 @@ class IndexViewUnitTest(TestCase):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "articles/index.html")
 
-    def test_has_title(self):
-        self.assertContains(self.response, "favicon.ico", 1)
-        self.assertContains(self.response, "<title>ほしのなか政府</title>", 1)
-
     def test_has_description(self):
         self.assertRegex(
             self.response.content.decode(), r'<meta name="description" content=.+>'
-        )
-
-    def test_has_header_navigation_bar(self):
-        self.assertContains(self.response, "<nav>", 1)
-        self.assertContains(
-            self.response,
-            f'<a class="navItem" href="{reverse("articles:list")}">記事一覧</a>',
         )
 
     def test_has_five_published_articles_in_order_of_new_updated(self):
@@ -95,19 +84,27 @@ class IndexViewUnitTest(TestCase):
             f'<a href="{reverse("articles:bureau", kwargs={"slug": self.bureau.slug})}">{self.bureau.name}</a>',
         )
 
-    def test_has_parilament_space(self):
-        self.assertContains(self.response, "全民議会構成", 1)
-
-    def test_has_footer(self):
-        self.assertContains(self.response, "<footer>", 1)
-        self.assertContains(self.response, "©️ 2023 Hoshinonaka/Snak", 1)
-
-    def test_has_logo_pictures(self):
-        self.assertContains(self.response, "logo.png", 2)
-        
 
 class IndexViewE2ETest(E2ETestCase):
+    def setUp(self):
+        self.selenium.get(self.selenium_url("articles:index"))
+
     def test_get_view(self):
-        self.selenium.get(self.live_server_url)
-        self.assertEqual("ほしのなか政府", self.selenium.title)
-        print(self.selenium.find_element(By.TAG_NAME, "a").text)
+        self.assertEqual(self.selenium.title, "ほしのなか政府")
+        self.assertEqual(self.selenium.page_source.count("favicon.ico"), 1)
+        self.assertEqual(self.selenium.page_source.count("logo.png"), 2)
+        self.assertEqual(self.selenium.page_source.count("全民議会構成"), 1)
+
+    def test_header_link_to_articles_list(self):
+        self.selenium.find_element(By.XPATH, "//header").find_element(
+            By.LINK_TEXT, "記事一覧"
+        ).click()
+        self.assertEqual(self.selenium.current_url, self.selenium_url("articles:list"))
+
+    def test_footer(self):
+        self.assertEqual(
+            self.selenium.find_element(By.XPATH, "//footer").text.count(
+                "©️ 2023 Hoshinonaka/Snak"
+            ),
+            1,
+        )
